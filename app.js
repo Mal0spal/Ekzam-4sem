@@ -4,34 +4,8 @@ import supabaseService from "./supabaseService.js";
 
 const app = express();//создаем express сервер
 
-const PUBLIC_DIR = "public";//создаем папку паблик + переменная к нему
+const PUBLIC_DIR = "public";
 app.use(express.static(PUBLIC_DIR));
-
-
-app.get("/:id", (req, res) => { //получить по id
-    let id = Number(req.params["id"]); //ключ
-     //создает переменную с id, в которую записывается значение req
-    
-     //проверочка id
-    if (!id) {
-      let error = {
-        status: "error",
-        message: "Неверный ID",
-      };
-      res.statusCode = 400;
-      res.send(error);
-      return;
-    }
-  
-    let answer = {
-      status: "200",
-      message: `Название '${id}'`//отправляет в консоль
-    }
-    
-    //200 - ок, 400 - не ок
-    res.statusCode = 400;
-    res.send(answer);
-  })
 
 
 app.post("/create", fileFilter, async (req, res) => {
@@ -45,11 +19,11 @@ app.post("/create", fileFilter, async (req, res) => {
     return;
   }
 
-  let model = {
+  let name = {
     name: req.body.name
   };
 
-  let data = await supabaseService.addModel(model);
+  let data = await supabaseService.addModel(name);
 
   if (!data) {
     let error = {
