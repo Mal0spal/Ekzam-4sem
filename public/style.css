@@ -1,0 +1,14 @@
+.bodyEkz {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainEkz {
+    flex-grow: 1;
+    margin: 0 auto;
+}
+
+.form-control.active{
+    background-color: red;
+}

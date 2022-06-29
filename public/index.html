@@ -7,21 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+        <link rel="stylesheet" href="style.css">
     <title>Ekzam</title>
-    <style>
-        .bodyEkz {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mainEkz {
-            flex-grow: 1;
-            margin: 0 auto;
-        }
-
-       
-    </style>
 </head>
 
 <body class="bodyEkz">
@@ -32,21 +19,19 @@
 
     <main class="mainEkz">
         <form class="form-control" name="model" method="post" action="/create" enctype="multipart/form-data">
-           
-
             <div class="form-group">
                 <label for="name">Название</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Введите название" required />
             </div>
 
-            <button type="submit" class="btn btn-success">Добавить название(Консоль)</button>
+            <button type="submit" class="btn btn-success">Добавить название(Консоль, Supabase)</button>
             <button id="SendButton" type="submit" class="btn btn-success">Добавить название(Список)</button>
-</form>
-            <table id="table">
-                <tr>
-                    <th>Список</th>
-                </tr>
-            </table>
+        </form>
+        <table id="table">
+            <tr>
+                <th>Список</th>
+            </tr>
+        </table>
     </main>
 
     <footer>
@@ -54,41 +39,53 @@
         <p>201-324</p>
     </footer>
 
-    
+
+
+    <script>
+        let form = document.forms[0];
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            let formData = new FormData();
+            formData.append("name", e.target.name.value);
+
+            fetch('/create', {
+                method: "POST",
+                body: formData,
+            })
+                .then((r) => r.json())
+                .then((json) => {
+                    console.table(json);
+                })
+                .catch((error) => alert(`Ошибка\n${error}`));
+        });
+
+
+        document.getElementById("SendButton").onclick = function () {
+            document.getElementById("table").style.display = "block";
+
+            let table = document.getElementById("table");
+            let row = table.insertRow(-1);
+            let text = row.insertCell(0);
+            text.innerHTML = document.getElementById("name").value;
+            return false;
+        }
+
+        let InfoName = document.getElementById('name');
+
+        InfoName.addEventListener("input", (e) => {
+            if (InfoName.validity.valueMissing) {
+                InfoName.classList.add('active');
+            }
+            else {
+                InfoName.setCustomValidity("");
+                InfoName.classList.remove('active');
+            }
+        });
+
+    </script>
+
 </body>
 
 </html>
-
-<script>
-    let form = document.forms[0];
-
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        let formData = new FormData();
-        formData.append("name", e.target.name.value);
-
-        fetch('/create', {
-            method: "POST",
-            body: formData,
-        })
-            .then((r) => r.json())
-            .then((json) => {
-                console.table(json);
-            })
-            .catch((error) => alert(`Ошибка\n${error}`));
-    });
-
-
-    document.getElementById("SendButton").onclick = function () {
-        document.getElementById("table").style.display = "block";
-
-        let table = document.getElementById("table");
-        let row = table.insertRow(-1);
-        let text = row.insertCell(0);
-        text.innerHTML = document.getElementById("name").value;
-        return false;
-    }
-
-
-</script>
