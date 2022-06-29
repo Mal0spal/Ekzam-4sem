@@ -17,7 +17,10 @@
 
         .mainEkz {
             flex-grow: 1;
+            margin: 0 auto;
         }
+
+       
     </style>
 </head>
 
@@ -26,16 +29,24 @@
     <header>
         <p>Вариант 1</p>
     </header>
-    
+
     <main class="mainEkz">
         <form class="form-control" name="model" method="post" action="/create" enctype="multipart/form-data">
-            <!--post, get, delet, put (изменение)-->
+           
+
             <div class="form-group">
                 <label for="name">Название</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Введите название" required />
             </div>
 
-            <button type="submit" class="btn btn-success">Добавить название</button>
+            <button type="submit" class="btn btn-success">Добавить название(Консоль)</button>
+            <button id="SendButton" type="submit" class="btn btn-success">Добавить название(Список)</button>
+</form>
+            <table id="table">
+                <tr>
+                    <th>Список</th>
+                </tr>
+            </table>
     </main>
 
     <footer>
@@ -43,30 +54,41 @@
         <p>201-324</p>
     </footer>
 
-    </form>
+    
 </body>
 
 </html>
 
 <script>
-    let form = document.forms[0]; //записывает форму, 0 - потому что одна она
+    let form = document.forms[0];
 
-    form.addEventListener("submit", (e) => { //addEventListener - реагирует на события; (e) => стрелочная функция, передается событие, в фигурных скобках его исполнение
-        e.preventDefault(); //preventDefault() - убирает стандартное поведение кнопки
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-        let formData = new FormData(); //нечто похожее на json, составной объект
-        formData.append("name", e.target.name.value); //.append - собрать, создает поле и добавляет туда значения из формы
-        formData.append("description", e.target.description.value);
-        formData.append("model", e.target.image.files[0]);
+        let formData = new FormData();
+        formData.append("name", e.target.name.value);
 
-        fetch('/create', { //fetch - отправляет запрос
+        fetch('/create', {
             method: "POST",
             body: formData,
         })
-            .then((r) => r.json()) //then - когла произойдет fetch, создастся переменная с типом json
+            .then((r) => r.json())
             .then((json) => {
-                console.table(json); //если всё ок, в консоль выводит json
+                console.table(json);
             })
-            .catch((error) => alert(`Ошибка\n${error}`)); //если не ок - ошибку
+            .catch((error) => alert(`Ошибка\n${error}`));
     });
+
+
+    document.getElementById("SendButton").onclick = function () {
+        document.getElementById("table").style.display = "block";
+
+        let table = document.getElementById("table");
+        let row = table.insertRow(-1);
+        let text = row.insertCell(0);
+        text.innerHTML = document.getElementById("name").value;
+        return false;
+    }
+
+
 </script>

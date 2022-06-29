@@ -7,36 +7,37 @@ const app = express();//создаем express сервер
 const PUBLIC_DIR = "public";//создаем папку паблик + переменная к нему
 app.use(express.static(PUBLIC_DIR));
 
-//обрабатывает 4 запроса разных типов
-app.get("/:id", (req, res) => { //получить по id
-  let id = Number(req.params["id"]); //ключ
-   //создает переменную с id, в которую записывается значение req
-  
-   //проверочка id
-  if (!id) {
-    let error = {
-      status: "error",
-      message: "Неверный ID",
-    };
-    res.statusCode = 400;
-    res.send(error);
-    return;
-  }
 
-  let answer = {
-    status: "ok",
-    message: `Модель '${id}'`//отправляет в консоль
-  }
+app.get("/:id", (req, res) => { //получить по id
+    let id = Number(req.params["id"]); //ключ
+     //создает переменную с id, в которую записывается значение req
+    
+     //проверочка id
+    if (!id) {
+      let error = {
+        status: "error",
+        message: "Неверный ID",
+      };
+      res.statusCode = 400;
+      res.send(error);
+      return;
+    }
   
-  //200 - ок, 400 - не ок
-  res.statusCode = 400;
-  res.send(answer);
-})
-//async - асинхронная функция, одновременно с разных компов добавлять запись 
+    let answer = {
+      status: "200",
+      message: `Название '${id}'`//отправляет в консоль
+    }
+    
+    //200 - ок, 400 - не ок
+    res.statusCode = 400;
+    res.send(answer);
+  })
+
+
 app.post("/create", fileFilter, async (req, res) => {
-  if (!req.body?.name || !req.files[0]?.path) {
+  if (!req.body?.name) {
     let error = {
-      status: "error",
+      status: "400",
       message: "Не хватает данных",
     };
     res.statusCode = 400;
@@ -52,7 +53,7 @@ app.post("/create", fileFilter, async (req, res) => {
 
   if (!data) {
     let error = {
-      status: "error",
+      status: "400",
       message: "Ошибка при добавлении в базу данных",
     };
     res.statusCode = 400;
@@ -61,14 +62,13 @@ app.post("/create", fileFilter, async (req, res) => {
   }
 
   let answer = {
-    status: "ok",
+    status: "200",
     data
   };
 
   res.statusCode = 200;
   res.send(answer);
 });
-
 
 const port = process.env.PORT || 5500;
 app.listen(port, () => console.log(`Server started at port http://localhost:5500/`));
