@@ -1,0 +1,23 @@
+{
+  "name": "ekzam-4sem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mal0spal/Ekzam-4sem.git"
+  },
+  "author": "Ivan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mal0spal/Ekzam-4sem/issues"
+  },
+  "homepage": "https://github.com/Mal0spal/Ekzam-4sem#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "node": "^18.4.0"
+  }
+}
